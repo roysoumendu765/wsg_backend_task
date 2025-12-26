@@ -6,8 +6,17 @@ from app.schemas import TransactionWebhook, TransactionResponse
 from app.database import AsyncSessionLocal
 from app.crud import create_transaction_if_not_exists, get_transaction_by_id
 from app.worker import process_transaction
+from app.database import engine, Base
+from app import models
+from contextlib import asynccontextmanager
 
 app = FastAPI(title="Transaction Webhook Service")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
 
 @app.get("/")
 async def health_check():
