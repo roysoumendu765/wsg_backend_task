@@ -6,6 +6,9 @@ This service is designed to handle real-world webhook challenges such as **dupli
 
 ---
 
+## Deployed Base Url:
+Link: https://wsgbackendtask-production.up.railway.app/
+
 ## 🧩 Tech Stack
 
 - **Python 3.11+**
