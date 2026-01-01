@@ -2,10 +2,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from app.models import Transaction
+from app.schemas import TransactionWebhook
 
 async def create_transaction_if_not_exists(
     db: AsyncSession,
-    data
+    data: TransactionWebhook
 ) -> bool:
     transaction = Transaction(
         transaction_id=data.transaction_id,
@@ -15,7 +16,9 @@ async def create_transaction_if_not_exists(
         currency=data.currency,
         status="PROCESSING"
     )
+
     db.add(transaction)
+
     try:
         await db.commit()
         return True
