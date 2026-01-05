@@ -1,6 +1,7 @@
 from fastapi import FastAPI, BackgroundTasks, Depends, status, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timezone
+from typing import List
 
 from app.schemas import TransactionWebhook, TransactionResponse
 from app.database import AsyncSessionLocal
@@ -64,7 +65,7 @@ async def transaction_webhook(
 
 @app.get(
     "/v1/transactions/{transaction_id}",
-    response_model=TransactionResponse
+    response_model=List[TransactionResponse]
 )
 async def get_transaction(
     transaction_id: str,
@@ -78,4 +79,4 @@ async def get_transaction(
             detail="Transaction not found"
         )
 
-    return transaction
+    return [transaction]
